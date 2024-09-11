@@ -19,12 +19,12 @@ namespace TaskManagerAPI
 
         [BsonElement("deadline")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime Deadline { get; set; }  
+        public DateTime Deadline { get; set; }
 
-        [BsonElement("isCompleted")]  
-        public bool IsCompleted { get; set; }
+        [BsonElement("isCompleted")]
+        public bool IsCompleted { get; set; } = false;
 
-        [BsonElement("category")]  
-        public string Category { get; set; }
+        [BsonElement("category")]
+        public string Category { get; set; } = "Default Category";
     }
 }
