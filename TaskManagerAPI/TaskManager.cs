@@ -5,12 +5,15 @@ namespace TaskManagerAPI
         private List<TaskClass> tasks;
         private int nextId = 1;
         //private FileIO fileIO;
+        private DBManager dbManager;
 
         public TaskManager()
         {
             //fileIO = new FileIO();
             //tasks = fileIO.Read_File() ?? new List<TaskClass>();
-            tasks = new List<TaskClass>();
+            //tasks = new List<TaskClass>();
+            dbManager = new DBManager();
+            tasks = dbManager.FindAllTasks();
         }
 
         // Create a new task
