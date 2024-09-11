@@ -8,7 +8,7 @@ namespace TaskManagerAPI
 
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string? Id { get; set; }
 
         [BsonElement("taskName")]
         public string TaskName { get; set; }
@@ -19,14 +19,7 @@ namespace TaskManagerAPI
 
         [BsonElement("deadline")]
         [BsonDateTimeOptions(Kind = DateTimeKind.Local)]
-        public DateTime MongoDeadline { get; set; }  // Stored as DateTime
-
-        [BsonIgnore]
-        public DateOnly Deadline
-        {
-            get => DateOnly.FromDateTime(MongoDeadline);  // Convert DateTime to DateOnly
-            set => MongoDeadline = value.ToDateTime(TimeOnly.MinValue);  // Convert DateOnly to DateTime
-        }
+        public DateTime Deadline { get; set; }  
 
         [BsonElement("isCompleted")]  
         public bool IsCompleted { get; set; }

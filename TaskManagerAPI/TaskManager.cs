@@ -5,21 +5,21 @@ namespace TaskManagerAPI
         private List<TaskClass> tasks;
         private int nextId = 1;
         //private FileIO fileIO;
-        private DBManager dbManager;
+        private DBManager _dbManager;
 
         public TaskManager()
         {
             //fileIO = new FileIO();
             //tasks = fileIO.Read_File() ?? new List<TaskClass>();
             //tasks = new List<TaskClass>();
-            dbManager = new DBManager();
-            tasks = dbManager.FindAllTasks();
+            _dbManager = new DBManager();
+            tasks = _dbManager.FindAllTasks();
         }
 
         // Create a new task
-        public void CreateTask(string name, string value, DateOnly deadline, bool isCompleted, string? category = null)
+        public void CreateTask(string name, string value, DateTime deadline, bool isCompleted, string? category = null)
         {
-            if (deadline <= DateOnly.FromDateTime(DateTime.Now))
+            if (deadline <= DateTime.Now)
             {
                 throw new ArgumentException("Deadline must be a future date");
             }
@@ -60,23 +60,37 @@ namespace TaskManagerAPI
         }
 
         // Update an existing task by name
-        public List<TaskClass> UpdateTask(string name, string newValue, DateOnly newDeadline, bool isCompleted, string category)
+        public List<TaskClass> UpdateTask(string name, string newValue, DateTime newDeadline, bool isCompleted, string category)
         {
-            var task = tasks.FirstOrDefault(t => t.TaskName == name);
-            if (task != null)
+            // Find the task in the database
+            var existingTask = _dbManager.FindTaskByName(name);
+
+            if (existingTask != null)
             {
-                task.TaskValue = newValue;
-                task.Deadline = newDeadline;
-                task.IsCompleted = isCompleted;
-                task.Category = category;
+                // Create an updated task object
+                var updatedTask = new TaskClass
+                {
+                    TaskName = name,  // Keep the same name
+                    TaskValue = newValue,
+                    Deadline = newDeadline,
+                    IsCompleted = isCompleted,
+                    Category = category
+                };
+
+                // Update the task in the database
+                _dbManager.UpdateTaskByName(name, updatedTask);
                 Console.WriteLine($"Task '{name}' updated.");
-            }
+        }
             else
             {
                 Console.WriteLine($"Task with name '{name}' not found.");
             }
-            return tasks;
+
+            // Return the updated list of tasks
+            return _dbManager.FindAllTasks();;
         }
+
+
 
         // Delete a task by name
         public void DeleteTask(string name)

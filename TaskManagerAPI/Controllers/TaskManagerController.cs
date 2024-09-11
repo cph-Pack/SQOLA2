@@ -40,7 +40,7 @@ namespace TaskManagerAPI.Controllers
         {
             try
             {
-                _taskManager.CreateTask(task.TaskName, task.TaskValue, DateOnly.Parse(task.Deadline.ToString()), task.IsCompleted, task.Category);
+                _taskManager.CreateTask(task.TaskName, task.TaskValue, DateTime.Parse(task.Deadline.ToString()), task.IsCompleted, task.Category);
                 return CreatedAtAction(nameof(GetTask), new { name = task.TaskName }, task);
             }
             catch (ArgumentException ex)
