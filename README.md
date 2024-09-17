@@ -24,6 +24,7 @@ Code coverage is a good metric to show that some effort has been made to test th
 
 When refactoring or writing new code we can quickly monitor if it is being targeted by any tests. If a certain % of code coverage is required for a project to build down the CI/CD pipeline this catches any potential bugs that may have been introduced.
 
+
  To optimize our performance, we should analyze the difference in the tests further. We could also think about implementing caching strategies, so we could cache frequently used resources to reduce the response times across all our tests.
 
  ## Basic http tests
