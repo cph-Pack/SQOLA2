@@ -24,4 +24,28 @@ Code coverage is a good metric to show that some effort has been made to test th
 
 When refactoring or writing new code we can quickly monitor if it is being targeted by any tests. If a certain % of code coverage is required for a project to build down the CI/CD pipeline this catches any potential bugs that may have been introduced.
 
- To optimize our performance, we should analyze the difference in the tests further. We could also think about implementing caching strategies, so we could cache frequently used resources to reduce the response times across all our tests. 
+ To optimize our performance, we should analyze the difference in the tests further. We could also think about implementing caching strategies, so we could cache frequently used resources to reduce the response times across all our tests.
+
+ ## Basic http tests
+ We ran basic tests on [Get], [Post], [Put] and [Delete].
+ Using a [Get] request to return all the current tasks yeilds a [200] response along with every task
+ ![The successful request](<Screenshot 2024-09-17 164400.png>)
+ While a [Get] request alongside the task name only returns one
+ ![a single task](<Screenshot 2024-09-17 171802.png>)
+  
+  Next we tested for both a successful [Post] and an unsuccessful [Post]. The first did not succeed due to having a wrong date, yeilding a [400] response
+  ![unsuccessful](<Screenshot 2024-09-17 164959.png>)
+  While a correct date yeilds a [201] response.
+  ![successful](<Screenshot 2024-09-17 165036.png>)
+  Along with an entry into our database
+  ![a new database entry](<Screenshot 2024-09-17 170654.png>)
+
+Testing the [Put] request yeilds a [204] response
+![great success](<Screenshot 2024-09-17 165325.png>)
+Along with an updated database entry
+![the updated entry](<Screenshot 2024-09-17 171124.png>)
+
+Testing for [Delete] yeilds a [204] response
+![successful delete](<Screenshot 2024-09-17 165435.png>)
+And to prove a successful delete, using [Get] again gives a [404] response
+![but nobody came...](<Screenshot 2024-09-17 165842.png>)
