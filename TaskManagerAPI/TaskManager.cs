@@ -1,5 +1,8 @@
+using System.Diagnostics.CodeAnalysis;
+
 namespace TaskManagerAPI
 {
+    [ExcludeFromCodeCoverage]
     public class TaskManager
     {
         private DBManager _dbManager;

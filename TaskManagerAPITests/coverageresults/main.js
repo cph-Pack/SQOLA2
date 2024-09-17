@@ -221,11 +221,9 @@ var assemblies = [
   {
     "name": "TaskManagerAPI",
     "classes": [
-      { "name": "Program", "rp": "TaskManagerAPI_Program.html", "cl": 0, "ucl": 14, "cal": 14, "tl": 25, "cb": 0, "tb": 2, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "TaskManagerAPI.Controllers.TaskManagerController", "rp": "TaskManagerAPI_TaskManagerController.html", "cl": 25, "ucl": 9, "cal": 34, "tl": 72, "cb": 3, "tb": 4, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "TaskManagerAPI.DBManager", "rp": "TaskManagerAPI_DBManager.html", "cl": 44, "ucl": 3, "cal": 47, "tl": 75, "cb": 3, "tb": 4, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "TaskManagerAPI.TaskClass", "rp": "TaskManagerAPI_TaskClass.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "TaskManagerAPI.TaskManager", "rp": "TaskManagerAPI_TaskManager.html", "cl": 57, "ucl": 8, "cal": 65, "tl": 99, "cb": 6, "tb": 10, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
