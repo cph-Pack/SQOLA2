@@ -1,3 +1,5 @@
+using System.Xml.Linq;
+
 namespace TaskManagerAPI
 {
     public class TaskManager
@@ -10,24 +12,13 @@ namespace TaskManagerAPI
         }
 
         // Create a new task
-        public void CreateTask(string name, string value, DateTime deadline, bool isCompleted, string? category = null)
+        public void CreateTask(TaskClass task)
         {
-            if (deadline <= DateTime.Now)
+            if (!TaskIsValid(task))
             {
-                throw new ArgumentException("Deadline must be a future date");
+                throw new ArgumentException("Task is invalid");
             }
-
-            string taskCategory = string.IsNullOrWhiteSpace(category) ? "Default Category" : category;
-            var task = new TaskClass()
-            {
-                TaskName = name,
-                TaskValue = value,
-                Category = taskCategory,
-                Deadline = deadline,
-                IsCompleted = isCompleted
-            };
             _dbManager.InsertTask(task);
-            Console.WriteLine($"Task '{name}' created.");
         }
 
         // Read a specific task by name
@@ -36,45 +27,46 @@ namespace TaskManagerAPI
             var task = _dbManager.FindTaskByName(name);
             if (task != null)
             {
-                Console.WriteLine($"Task found: {task.TaskName} - {task.TaskValue} - Category: {task.Category} - Deadline: {task.Deadline} - Completed: {task.IsCompleted}");
+                return task;
             }
             else
             {
-                Console.WriteLine($"Task with name '{name}' not found.");
+                throw new ArgumentException("Could not find a task with that name");
             }
-            return task;
         }
 
         // Read all tasks
         public List<TaskClass> GetAllTasks()
         {
-            return _dbManager.FindAllTasks();
+            var tasks = _dbManager.FindAllTasks();
+            if (tasks.Count > 0)
+            {
+                return tasks;
+            }
+            else
+            {
+                throw new ArgumentException("There is no tasks in the DB...");
+            }
         }
 
         // Update an existing task by name
-        public List<TaskClass> UpdateTask(string name, string newValue, DateTime newDeadline, bool isCompleted, string category)
+        public List<TaskClass> UpdateTask(TaskClass task, string name)
         {
-            var existingTask = _dbManager.FindTaskByName(name);
-
-            if (existingTask != null)
+            if (!TaskIsValid(task))
             {
-                var updatedTask = new TaskClass
-                {
-                    TaskName = name,  
-                    TaskValue = newValue,
-                    Deadline = newDeadline,
-                    IsCompleted = isCompleted,
-                    Category = category
-                };
-
-                _dbManager.UpdateTaskByName(name, updatedTask);
-                Console.WriteLine($"Task '{name}' updated.");
-        }
-            else
-            {
-                Console.WriteLine($"Task with name '{name}' not found.");
+                throw new ArgumentException("Task is invalid");
             }
 
+            var existingTask = _dbManager.FindTaskByName(name);
+            if (existingTask != null)
+            {
+                _dbManager.UpdateTaskByName(name, task);
+                Console.WriteLine($"Task '{name}' updated.");
+            }
+            else
+            {
+                throw new ArgumentException("Could not find a task with that name");
+            }
             return _dbManager.FindAllTasks();;
         }
 
@@ -87,13 +79,39 @@ namespace TaskManagerAPI
             if (existingTask != null)
             {
                 _dbManager.DeleteTaskByName(name);
-                Console.WriteLine($"Task '{name}' deleted.");
             }
             else
             {
-                Console.WriteLine($"Task with name '{name}' not found.");
+                throw new ArgumentException("Could not find a task with that name");
             }
 
         }
+
+        public bool TaskIsValid(TaskClass task)
+        {
+            bool isResultGood = true;
+
+            if (task.Deadline <= DateTime.Now)
+            {
+                isResultGood = false;
+            }
+            if (string.IsNullOrEmpty(task.Category))
+            {
+                isResultGood = false;
+            }
+            if (task.TaskName.Length > 20)
+            {
+                isResultGood = false;
+            }
+            if (task.TaskValue.Length > 20)
+            {
+                isResultGood = false;
+            }
+
+            return isResultGood;
+
+        }
+
+
     }
 }
