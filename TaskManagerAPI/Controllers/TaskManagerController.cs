@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Formats.Asn1;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace TaskManagerAPI.Controllers
 {
@@ -18,20 +20,30 @@ namespace TaskManagerAPI.Controllers
         [HttpGet]
         public ActionResult<List<TaskClass>> GetAllTasks()
         {
-            var tasks = _taskManager.GetAllTasks();
-            return Ok(tasks);
+            try
+            {
+                var tasks = _taskManager.GetAllTasks();
+                return Ok(tasks);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // GET api/task/{name}
         [HttpGet("{name}")]
         public ActionResult<TaskClass> GetTask(string name)
         {
-            var task = _taskManager.GetTask(name);
-            if (task == null)
+            try
             {
-                return NotFound();
+                var task = _taskManager.GetTask(name);
+                return Ok(task);
             }
-            return Ok(task);
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
         }
 
         // POST api/task
@@ -40,7 +52,7 @@ namespace TaskManagerAPI.Controllers
         {
             try
             {
-                _taskManager.CreateTask(task.TaskName, task.TaskValue, DateTime.Parse(task.Deadline.ToString()), task.IsCompleted, task.Category);
+                _taskManager.CreateTask(task);
                 return CreatedAtAction(nameof(GetTask), new { name = task.TaskName }, task);
             }
             catch (ArgumentException ex)
@@ -53,10 +65,13 @@ namespace TaskManagerAPI.Controllers
         [HttpPut("{name}")]
         public ActionResult UpdateTask(string name, [FromBody] TaskClass updatedTask)
         {
-            var tasks = _taskManager.UpdateTask(name, updatedTask.TaskValue, updatedTask.Deadline, updatedTask.IsCompleted, updatedTask.Category);
-            if (tasks == null)
+            try
             {
-                return NotFound();
+                var tasks = _taskManager.UpdateTask(updatedTask, name);
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
             }
             return NoContent();
         }
@@ -65,8 +80,17 @@ namespace TaskManagerAPI.Controllers
         [HttpDelete("{name}")]
         public ActionResult DeleteTask(string name)
         {
-            _taskManager.DeleteTask(name);
-            return NoContent();
+            try
+            {
+                _taskManager.DeleteTask(name);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            //_taskManager.DeleteTask(name);
+            //return NoContent();
         }
     }
 }
