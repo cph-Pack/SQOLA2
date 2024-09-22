@@ -114,6 +114,41 @@ namespace TaskManagerAPI
 
         }
 
+        // The business rules for task creation are: Task name not empty, should be unique, min 1 chars, max 20. Task value min 10 chars, max 100. Date must be a later date.
+        public bool ValidateTask(TaskClass task)
+        {
+            if (string.IsNullOrEmpty(task.TaskName))
+            {
+                throw new ArgumentException("Task name cannot be empty. It must have at least 1 character.");
+            }
+
+            if (task.TaskName.Length > 20)
+            {
+                throw new ArgumentException("Task name must not exceed 20 characters.");
+            }
+
+            if (string.IsNullOrEmpty(task.TaskValue))
+            {
+                throw new ArgumentException("Task value cannot be empty.");
+            }
+
+            if (task.TaskValue.Length < 10)
+            {
+                throw new ArgumentException("Task value must have at least 10 characters.");
+            }
+
+            if (task.TaskValue.Length > 100)
+            {
+                throw new ArgumentException("Task value must not exceed 100 characters.");
+            }
+
+            if (task.Deadline <= DateTime.Now)
+            {
+                throw new ArgumentException("Task date cannot be today.");
+            }
+            return true;
+        }
+
 
     }
 }
