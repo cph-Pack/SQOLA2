@@ -144,7 +144,7 @@ namespace TaskManagerAPI
 
             if (task.Deadline <= DateTime.Now)
             {
-                throw new ArgumentException("Task date cannot be today.");
+                throw new ArgumentException("Task date must be a future date.");
             }
             return true;
         }

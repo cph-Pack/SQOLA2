@@ -82,5 +82,36 @@ namespace TaskManagerAPITests
             }
         }
 
+        [Theory]
+        [InlineData(-1, "Task date must be a future date.")] // Yesterday (invalid)
+        [InlineData(0, "Task date must be a future date.")] // Today (invalid)
+        [InlineData(1, null)] // Tomorrow (valid)
+        public void CreateTask_ShouldValidateDeadlineAndErrorMessage(int daysFromToday, string expectedErrorMessage)
+        {
+            // Arrange
+            var task = new TaskClass
+            {
+                TaskName = "TaskName",
+                TaskValue = "Valid Task Value",
+                Deadline = DateTime.Now.AddDays(daysFromToday),
+                IsCompleted = false
+            };
+
+            if (expectedErrorMessage != null)
+            {
+                // Act & Assert
+                var exception = Assert.Throws<ArgumentException>(() => taskManager.ValidateTask(task));
+                Assert.Equal(expectedErrorMessage, exception.Message);
+            }
+            else
+            {
+                // Act
+                var expectedBool = true;
+                var actualBool = taskManager.ValidateTask(task);
+                // Assert
+                Assert.Equal(expectedBool, actualBool);
+            }
+        }
+
     }
 }
