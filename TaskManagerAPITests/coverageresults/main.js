@@ -221,9 +221,10 @@ var assemblies = [
   {
     "name": "TaskManagerAPI",
     "classes": [
-      { "name": "TaskManagerAPI.Controllers.TaskManagerController", "rp": "TaskManagerAPI_TaskManagerController.html", "cl": 25, "ucl": 9, "cal": 34, "tl": 72, "cb": 3, "tb": 4, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
-      { "name": "TaskManagerAPI.DBManager", "rp": "TaskManagerAPI_DBManager.html", "cl": 44, "ucl": 3, "cal": 47, "tl": 75, "cb": 3, "tb": 4, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "TaskManagerAPI.Controllers.TaskManagerController", "rp": "TaskManagerAPI_TaskManagerController.html", "cl": 28, "ucl": 17, "cal": 45, "tl": 95, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "TaskManagerAPI.DBManager", "rp": "TaskManagerAPI_DBManager.html", "cl": 41, "ucl": 6, "cal": 47, "tl": 75, "cb": 2, "tb": 4, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
       { "name": "TaskManagerAPI.TaskClass", "rp": "TaskManagerAPI_TaskClass.html", "cl": 6, "ucl": 0, "cal": 6, "tl": 30, "cb": 0, "tb": 0, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
+      { "name": "TaskManagerAPI.TaskManager", "rp": "TaskManagerAPI_TaskManager.html", "cl": 62, "ucl": 15, "cal": 77, "tl": 133, "cb": 22, "tb": 28, "cm": 0, "tm": 0, "lch": [], "bch": [], "mch": [], "hc": [], "metrics": { } },
     ]},
 ];
 
