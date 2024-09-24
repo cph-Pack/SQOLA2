@@ -6,11 +6,12 @@ namespace TaskManagerAPI
     [ExcludeFromCodeCoverage]
     public class TaskManager
     {
-        private DBManager _dbManager;
+        private IDBManager _dbManager;
 
         public TaskManager(IDBManager dbManager)
         {
-            _dbManager = new DBManager();
+            //_dbManager = new DBManager();
+            _dbManager = dbManager;
         }
 
         public TaskManager()
