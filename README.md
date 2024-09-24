@@ -69,3 +69,6 @@ While doing code and software reviews we found issues ranging from minor to majo
 Equivalence Partitioning and Boundary Value Analysis influenced our test design as it helped us get efficient coverage of both valid and invalid input ranges. 
 
 Using `[Theory]` and `[InlineData]` for the tests allowed us to test multiple values from different equivalence classes (valid and invalid) and the boundary values in a compact way. This also reduced redundancy, as I avoided writing separate tests for each value, which means a more organized and maintainable test suite. This approach ensured that we covered critical edge cases, and that the business rules are enforced. 
+
+## Static Code Analysis
+FxCop has since been deprecated as code analysis has been integrated into C#. This does however let us streamline coding as it will offer suggestions for improvements such as exception handling and cleaning unnecessary values during development. This does however mean that writing a report on the use of code analysis is rather difficult as we have no proof of it's use nor the extent of it's use or what issues it has been detecting.
