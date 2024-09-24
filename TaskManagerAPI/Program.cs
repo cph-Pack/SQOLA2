@@ -11,7 +11,7 @@ internal class Program
         // Add services to the container.
         builder.Services.AddControllers();
         builder.Services.AddScoped<TaskManager>();
-        builder.Services.AddScoped<IDBManager, DBManager>();
+        builder.Services.AddScoped<IDBManager, DBManager>(); //denne og linjen over kan udkommenteres hvis koden ikke længere virker
 
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
