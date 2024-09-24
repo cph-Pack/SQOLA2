@@ -1,0 +1,52 @@
+# TaskManagerAPI
+
+## Basic Load Testing with JMeter:
+- Analyze and document your results, focusing on the API’s performance under
+moderate load.
+
+
+When load testing we used Apache JMeter to create test plans. We created three different test plans with different amounts of thread groups (users) on the same HTTP request, which was the GET of the /TaskManager endpoint. The test plans are OLA2_Test_Plan_50 with 50 users, OLA2_Test_Plan_100 with 100, and OLA2_Test_Plan_50l (l for loop) with 50 users each sending 30 requests. For each test, we used the Gaussian Random Timer, so that there would be a pause in between requests of between 0.5 and 1.5 seconds. We also used the response assertion to assert whether or not the response code was 200 (OK) for all tests. The results of the load tests can be found in the corresponding folders https://github.com/cph-Pack/SQOLA2/tree/master/Load%20Testing. 
+
+The tests show that surprisingly the best overall performing test was the 50l test.
+It was the fastest test in terms of response times, as it had a mean response time of 3.9 ms, while the 50 test had a mean response time of 29.2 ms, and 100’s was 38.5 ms. All tests did have some outliers in response time with the max response time being significantly higher than the mean at 237, 447, and 306 ms respectively. These slower response times are all past the 90 percentiles, so most users won’t experience those response times, but even the lowest response time for the 50 and 100 test was higher than the 50l mean response time at 8 ms for both.
+
+## Reflection on Coverage and Performance:
+- Reflect on how you ensured code coverage and maintained a balance between
+unit and integration tests.
+
+We made sure to test all the methods that we made. Any code that was given by microsoft/mongodb is considered good code and need not be tested in our eyes.
+We have far more integration tests compared to unit tests. This is not by design but due to poor decoupling of our code. We are aware of this issue and we are therefor considering a test driven development (TDD) style for the next project.
+
+
+- Briefly discuss the importance of code coverage and how you could optimize performance based on your load testing and benchmarking results.
+
+Code coverage is a good metric to show that some effort has been made to test the code. It does not reflect the quality of the tests however it does show potential paths of your code uncovered by the tests. Typically this is when an error occurs as most people test the happy path.
+
+When refactoring or writing new code we can quickly monitor if it is being targeted by any tests. If a certain % of code coverage is required for a project to build down the CI/CD pipeline this catches any potential bugs that may have been introduced.
+
+
+ To optimize our performance, we should analyze the difference in the tests further. We could also think about implementing caching strategies, so we could cache frequently used resources to reduce the response times across all our tests.
+
+ ## Basic http tests
+ We ran basic tests on [Get], [Post], [Put] and [Delete].
+ Using a [Get] request to return all the current tasks yeilds a [200] response along with every task
+ ![The successful request](<Screenshot 2024-09-17 164400.png>)
+ While a [Get] request alongside the task name only returns one
+ ![a single task](<Screenshot 2024-09-17 171802.png>)
+  
+  Next we tested for both a successful [Post] and an unsuccessful [Post]. The first did not succeed due to having a wrong date, yeilding a [400] response
+  ![unsuccessful](<Screenshot 2024-09-17 164959.png>)
+  While a correct date yeilds a [201] response.
+  ![successful](<Screenshot 2024-09-17 165036.png>)
+  Along with an entry into our database
+  ![a new database entry](<Screenshot 2024-09-17 170654.png>)
+
+Testing the [Put] request yeilds a [204] response
+![great success](<Screenshot 2024-09-17 165325.png>)
+Along with an updated database entry
+![the updated entry](<Screenshot 2024-09-17 171124.png>)
+
+Testing for [Delete] yeilds a [204] response
+![successful delete](<Screenshot 2024-09-17 165435.png>)
+And to prove a successful delete, using [Get] again gives a [404] response
+![but nobody came...](<Screenshot 2024-09-17 165842.png>)

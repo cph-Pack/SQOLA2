@@ -1,52 +1,64 @@
-# TaskManagerAPI
+# OLA 3
 
-## Basic Load Testing with JMeter:
-- Analyze and document your results, focusing on the API’s performance under
-moderate load.
+## Peer Code Review
+During our code review, we followed a walk-through style, and we reviewed the classes one at a time and wrote down our feedback.
+
+### TaskManager
+We noticed an inconsistence use of boolean expressions within the same function. The author had used both `== false` and `!`, so we noted that we would like it to be consistent, and it was changed to only `!` as it is less verbose. 
+
+We also discussed naming conventions, specifically with `TaskIsValid` vs `UniqueTask`, since the functions have similar uses and therefore could be named more similarly. They were changed to `IsValidTask` and `IsUniqueTask`. We also suggested to further improve these functions and where they're used, as they currently throw exceptions both within and when used.
+
+We also discussed that we would like to consistently use guard clauses. Guard clauses are conditional checks placed at the beginning of methods to validate input parameters or preconditions, and if the conditions aren't met, an exception is thrown. We use them to improve code readability as they clearly state the expectations and constrains, and since we then fail fast.
+
+### TaskManagerController
+We discussed if we should improve our exception handling by having specific catches in our `try-catch` blocks. This is a possibly improvement for later, as we currently only throw one type of exception.
+
+We also noticed some commented-out code, which we agreed should from now on be removed before merging into the master branch (except in special cases).
+
+We also noticed that we can add an id to the task from the endpoints. This is something we will change later, as it shouldn't be possible.
+
+### Coding standard overall
+Overall we agreed that our code was quite readable, but we discussed adding some XML comments to document our code. 
+
+We looked at these [coding standards](https://learn.microsoft.com/en-us/dotnet/csharp/fundamentals/coding-style/coding-conventions) by Microsoft and noticed that we do mostly adhere to them. We noticed that we deviate when it comes to comments, however, we do not think it affects the readability or maintainability of our code.
+
+### Testing and mocking
+We believe that we have followed the best practices regarding using mocks in testing. We used mocks to simulate our database, which ensured that the tests focused solely on the behavior of the code which interacts with it, which minimizes the risk of false results because of problems with the database. 
+
+## Software Review
+During our peer software review, we followed a technical review style and focused mostly on the suitability of the software based on the functional- and non-functional requirements.
+
+### Functional correctness
+The code performs as expected and we follow the business rules.
+
+### Non-functional aspects
+**Performance**: We aren't experiencing any significant performance issues, as we use a local database, and based on our prior load tests, we think that the performance is satisfactory. 
+
+**Maintainability**: We focused on improving maintainability during our code review. Our key take aways were being consistent for better readability as well, and using guard clauses to make sure correct conditions are always met and that if the system fails, it fails fast. 
+
+We improved the TaskManager by adding a database interface to its constructor instead of a hardcoded coupling to DBManager. This will make it easier to swap out or update the database layer in the future.
+
+**Testability**: Testability has also been greatly improved, since we added the database interface, since we can easier mocking the database through the interface. This allows us to isolate the code logic from the actual database. 
+
+We also added restrictions on certain methods, which made it easier for us to test the full functionality of the methods.
+
+### Adherence to best practices
+We have been consistent in following coding standards, focusing on code readability and structure. 
+
+We aim to avoid commented-out code on the master branch unless it's absolutely necessary, in which case we will clearly add an explanation as to why. 
+
+We want to add more documentation in the form of XML comments. 
+
+Although our style of commenting doesn't necessarily adhere to Microsoft's coding standards, we like the amount and way we use comments in our code, and will continue in a similar way.
 
 
-When load testing we used Apache JMeter to create test plans. We created three different test plans with different amounts of thread groups (users) on the same HTTP request, which was the GET of the /TaskManager endpoint. The test plans are OLA2_Test_Plan_50 with 50 users, OLA2_Test_Plan_100 with 100, and OLA2_Test_Plan_50l (l for loop) with 50 users each sending 30 requests. For each test, we used the Gaussian Random Timer, so that there would be a pause in between requests of between 0.5 and 1.5 seconds. We also used the response assertion to assert whether or not the response code was 200 (OK) for all tests. The results of the load tests can be found in the corresponding folders https://github.com/cph-Pack/SQOLA2/tree/master/Load%20Testing. 
-
-The tests show that surprisingly the best overall performing test was the 50l test.
-It was the fastest test in terms of response times, as it had a mean response time of 3.9 ms, while the 50 test had a mean response time of 29.2 ms, and 100’s was 38.5 ms. All tests did have some outliers in response time with the max response time being significantly higher than the mean at 237, 447, and 306 ms respectively. These slower response times are all past the 90 percentiles, so most users won’t experience those response times, but even the lowest response time for the 50 and 100 test was higher than the 50l mean response time at 8 ms for both.
-
-## Reflection on Coverage and Performance:
-- Reflect on how you ensured code coverage and maintained a balance between
-unit and integration tests.
-
-We made sure to test all the methods that we made. Any code that was given by microsoft/mongodb is considered good code and need not be tested in our eyes.
-We have far more integration tests compared to unit tests. This is not by design but due to poor decoupling of our code. We are aware of this issue and we are therefor considering a test driven development (TDD) style for the next project.
 
 
-- Briefly discuss the importance of code coverage and how you could optimize performance based on your load testing and benchmarking results.
-
-Code coverage is a good metric to show that some effort has been made to test the code. It does not reflect the quality of the tests however it does show potential paths of your code uncovered by the tests. Typically this is when an error occurs as most people test the happy path.
-
-When refactoring or writing new code we can quickly monitor if it is being targeted by any tests. If a certain % of code coverage is required for a project to build down the CI/CD pipeline this catches any potential bugs that may have been introduced.
+## Reflection on Testing and Code Quality
 
 
- To optimize our performance, we should analyze the difference in the tests further. We could also think about implementing caching strategies, so we could cache frequently used resources to reduce the response times across all our tests.
+-   How Equivalence Partitioning and Boundary Value Analysis influenced your test design.
 
- ## Basic http tests
- We ran basic tests on [Get], [Post], [Put] and [Delete].
- Using a [Get] request to return all the current tasks yeilds a [200] response along with every task
- ![The successful request](<Screenshot 2024-09-17 164400.png>)
- While a [Get] request alongside the task name only returns one
- ![a single task](<Screenshot 2024-09-17 171802.png>)
-  
-  Next we tested for both a successful [Post] and an unsuccessful [Post]. The first did not succeed due to having a wrong date, yeilding a [400] response
-  ![unsuccessful](<Screenshot 2024-09-17 164959.png>)
-  While a correct date yeilds a [201] response.
-  ![successful](<Screenshot 2024-09-17 165036.png>)
-  Along with an entry into our database
-  ![a new database entry](<Screenshot 2024-09-17 170654.png>)
+Equivalence Partitioning and Boundary Value Analysis influenced our test design as it helped us get efficient coverage of both valid and invalid input ranges. 
 
-Testing the [Put] request yeilds a [204] response
-![great success](<Screenshot 2024-09-17 165325.png>)
-Along with an updated database entry
-![the updated entry](<Screenshot 2024-09-17 171124.png>)
-
-Testing for [Delete] yeilds a [204] response
-![successful delete](<Screenshot 2024-09-17 165435.png>)
-And to prove a successful delete, using [Get] again gives a [404] response
-![but nobody came...](<Screenshot 2024-09-17 165842.png>)
+Using `[Theory]` and `[InlineData]` for the tests allowed us to test multiple values from different equivalence classes (valid and invalid) and the boundary values in a compact way. This also reduced redundancy, as I avoided writing separate tests for each value, which means a more organized and maintainable test suite. This approach ensured that we covered critical edge cases, and that the business rules are enforced. 
