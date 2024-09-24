@@ -20,7 +20,7 @@ namespace TaskManagerAPI
             {
                 throw new ArgumentException("Task is invalid");
             }
-            if (UniqueTask(task.TaskName) == false)
+            if (!UniqueTask(task.TaskName))
             {
                 throw new ArgumentException("Task already exists");
             }
