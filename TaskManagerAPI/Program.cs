@@ -1,4 +1,5 @@
 using System.Diagnostics.CodeAnalysis;
+using TaskManagerAPI;
 
 internal class Program
 {
@@ -8,8 +9,10 @@ internal class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
-
         builder.Services.AddControllers();
+        builder.Services.AddScoped<TaskManager>();
+        builder.Services.AddScoped<IDBManager, DBManager>(); //denne og linjen over kan udkommenteres hvis koden ikke længere virker
+
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();

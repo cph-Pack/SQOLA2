@@ -11,12 +11,16 @@ namespace TaskManagerAPITests
 {
     public class TaskManagerIntegrationTests
     {
+        private readonly TaskManagerController _controller;
         private readonly DBManager _dbManager;
+        private readonly TaskManager _taskManager;
 
         public TaskManagerIntegrationTests()
         {
             // Arrange - setup test database
             _dbManager = new DBManager();  // Assumes it connects to a test instance
+            _taskManager = new TaskManager(_dbManager);
+            _controller = new TaskManagerController(_taskManager);
         }
 
         [Fact]
@@ -32,16 +36,16 @@ namespace TaskManagerAPITests
                 Category = "TestCategory1"
             };
 
-            var controller = new TaskManagerController();
+            //var controller = new TaskManagerController();
 
             // Act: Opret en ny opgave via API'et
-            var createResult = controller.CreateTask(newTask);
+            var createResult = _controller.CreateTask(newTask);
 
             // Assert: Oprettelse skal returnere status 201 (Created)
             Assert.IsType<CreatedAtActionResult>(createResult);
 
             // Act: Hent den oprettede opgave via API'et
-            var getResult = controller.GetTask("IntegrationTestTask1");
+            var getResult = _controller.GetTask("IntegrationTestTask1");
 
             // Assert: Opgaven skal returneres korrekt med de samme værdier
             var okResult = Assert.IsType<OkObjectResult>(getResult.Result);
@@ -63,8 +67,8 @@ namespace TaskManagerAPITests
                 Category = "OriginalCategory"
             };
 
-            var controller = new TaskManagerController();
-            controller.CreateTask(task);
+            //var controller = new TaskManagerController();
+            _controller.CreateTask(task);
 
             // Act: Opdater opgaven med nye værdier
             var updatedTask = new TaskClass
@@ -75,13 +79,13 @@ namespace TaskManagerAPITests
                 IsCompleted = true,
                 Category = "UpdatedCategory"
             };
-            var updateResult = controller.UpdateTask("IntegrationTestTask2", updatedTask);
+            var updateResult = _controller.UpdateTask("IntegrationTestTask2", updatedTask);
 
             // Assert: Opdatering skal returnere status 204 (NoContent)
             Assert.IsType<NoContentResult>(updateResult);
 
             // Act: Hent den opdaterede opgave
-            var getResult = controller.GetTask("IntegrationTestTask2");
+            var getResult = _controller.GetTask("IntegrationTestTask2");
 
             // Assert: Bekræft at opgaven er opdateret korrekt
             var okResult = Assert.IsType<OkObjectResult>(getResult.Result);
@@ -94,18 +98,18 @@ namespace TaskManagerAPITests
         [Fact]
         public async Task DeleteTask_ShouldRemoveTaskFromDatabase()
         {
-            var controller = new TaskManagerController();
+            //var controller = new TaskManagerController();
 
             // Vi sletter opgaverne
-            var deleteResult = controller.DeleteTask("IntegrationTestTask1");
-            var deleteResuult = controller.DeleteTask("IntegrationTestTask2");
+            var deleteResult = _controller.DeleteTask("IntegrationTestTask1");
+            var deleteResuult = _controller.DeleteTask("IntegrationTestTask2");
 
             Assert.IsType<NoContentResult>(deleteResult);
             Assert.IsType<NoContentResult>(deleteResuult);
 
             // Act: Forsøg at hente den slettede opgave
-            var getResult1 = controller.GetTask("IntegrationTestTask1");
-            var getResult2 = controller.GetTask("IntegrationTestTask2");
+            var getResult1 = _controller.GetTask("IntegrationTestTask1");
+            var getResult2 = _controller.GetTask("IntegrationTestTask2");
 
             // Assert: Opgaverne skal ikke længere kunne findes
             Assert.IsType<NotFoundObjectResult>(getResult1.Result);

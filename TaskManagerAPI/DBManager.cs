@@ -4,7 +4,7 @@ using MongoDB.Driver;
 
 namespace TaskManagerAPI
 {
-    public class DBManager
+    public class DBManager : IDBManager
     {
         private const string connectionUri = "mongodb://localhost:27017";
         private readonly IMongoClient _client;
