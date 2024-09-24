@@ -16,11 +16,11 @@ namespace TaskManagerAPI
         // Create a new task
         public void CreateTask(TaskClass task)
         {
-            if (!TaskIsValid(task))
+            if (!IsValidTask(task))
             {
                 throw new ArgumentException("Task is invalid");
             }
-            if (!UniqueTask(task.TaskName))
+            if (!IsUniqueTask(task.TaskName))
             {
                 throw new ArgumentException("Task already exists");
             }
@@ -31,70 +31,57 @@ namespace TaskManagerAPI
         public TaskClass GetTask(string name)
         {
             var task = _dbManager.FindTaskByName(name);
-            if (task != null)
-            {
-                return task;
-            }
-            else
+            if (task == null)
             {
                 throw new ArgumentException("Could not find a task with that name");
-            }
+            } 
+            return task;
         }
 
         // Read all tasks
         public List<TaskClass> GetAllTasks()
         {
             var tasks = _dbManager.FindAllTasks();
-            if (tasks.Count > 0)
-            {
-                return tasks;
-            }
-            else
+            if (tasks.Count == 0)
             {
                 throw new ArgumentException("There is no tasks in the DB...");
             }
+            return tasks;
         }
 
         // Update an existing task by name
         public List<TaskClass> UpdateTask(TaskClass task, string name)
         {
-            if (!TaskIsValid(task))
+            if (!IsValidTask(task))
             {
                 throw new ArgumentException("Task is invalid");
             }
 
             var existingTask = _dbManager.FindTaskByName(name);
-            if (existingTask != null)
-            {
-                _dbManager.UpdateTaskByName(name, task);
-                Console.WriteLine($"Task '{name}' updated.");
-            }
-            else
+            if (existingTask == null)
             {
                 throw new ArgumentException("Could not find a task with that name");
+                
             }
+
+            _dbManager.UpdateTaskByName(name, task);
+            Console.WriteLine($"Task '{name}' updated.");
             return _dbManager.FindAllTasks();;
         }
-
-
 
         // Delete a task by name
         public void DeleteTask(string name)
         {
             var existingTask = _dbManager.FindTaskByName(name);
-            if (existingTask != null)
-            {
-                _dbManager.DeleteTaskByName(name);
-            }
-            else
+            if (existingTask == null)
             {
                 throw new ArgumentException("Could not find a task with that name");
             }
-
+            _dbManager.DeleteTaskByName(name);
         }
 
         // The business rules for task creation are: Task name not empty, should be unique, min 1 chars, max 20. Task value min 10 chars, max 100. Date must be a later date.
-        public bool TaskIsValid(TaskClass task)
+        public bool IsValidTask(TaskClass task)
         {
             if (string.IsNullOrEmpty(task.TaskName))
             {
@@ -128,19 +115,14 @@ namespace TaskManagerAPI
             return true;
         }
 
-        public bool UniqueTask(string name)
+        public bool IsUniqueTask(string name)
         {
             var task = _dbManager.FindTaskByName(name);
             if (task == null)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false; 
         }
-
-
     }
 }
