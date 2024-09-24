@@ -20,6 +20,10 @@ namespace TaskManagerAPI
             {
                 throw new ArgumentException("Task is invalid");
             }
+            if (!UniqueTask(task.TaskName))
+            {
+                throw new ArgumentException("Task already exists");
+            }
             _dbManager.InsertTask(task);
         }
 
@@ -122,6 +126,19 @@ namespace TaskManagerAPI
                 throw new ArgumentException("Task date must be a future date.");
             }
             return true;
+        }
+
+        public bool UniqueTask(string name)
+        {
+            var task = _dbManager.FindTaskByName(name);
+            if (task == null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
 
