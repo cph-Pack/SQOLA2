@@ -56,6 +56,10 @@ Although our style of commenting doesn't necessarily adhere to Microsoft's codin
 
 ## Reflection on Testing and Code Quality
 
+-   The value of performing both code reviews and software reviews in ensuring quality.
+
+While doing code and software reviews we found issues ranging from minor to major which lead to some good discussions about how we want to write our code. The result of this is more streamlined code with naming being more consistent, guard blocks being set up the same way, exception handling at the same layer and more decoupling to make testing single functionality easier. We still have more things we would like to implement, but we decided to keep these ideas in mind for our future projects. The project enforces our rules for business logic and works as intended.
+
 
 -   How Equivalence Partitioning and Boundary Value Analysis influenced your test design.
 
