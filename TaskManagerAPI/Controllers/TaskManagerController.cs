@@ -11,9 +11,10 @@ namespace TaskManagerAPI.Controllers
     {
         private readonly TaskManager _taskManager;
 
-        public TaskManagerController()
+        public TaskManagerController(TaskManager taskManager)
         {
-            _taskManager = new TaskManager();
+            //_taskManager = new TaskManager();
+            _taskManager = taskManager;
         }
 
         // GET api/task

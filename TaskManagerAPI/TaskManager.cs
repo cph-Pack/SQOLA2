@@ -8,9 +8,13 @@ namespace TaskManagerAPI
     {
         private DBManager _dbManager;
 
-        public TaskManager()
+        public TaskManager(IDBManager dbManager)
         {
             _dbManager = new DBManager();
+        }
+
+        public TaskManager()
+        {
         }
 
         // Create a new task
