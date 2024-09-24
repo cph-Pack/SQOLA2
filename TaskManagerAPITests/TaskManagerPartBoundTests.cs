@@ -34,14 +34,14 @@ namespace TaskManagerAPITests
             if (expectedErrorMessage != null)
             {
                 // Act & Assert
-                var exception = Assert.Throws<ArgumentException>(() => taskManager.ValidateTask(task));
+                var exception = Assert.Throws<ArgumentException>(() => taskManager.TaskIsValid(task));
                 Assert.Equal(expectedErrorMessage, exception.Message);
             }
             else
             {
                 // Act
                 var expectedBool = true;
-                var actualBool = taskManager.ValidateTask(task);
+                var actualBool = taskManager.TaskIsValid(task);
                 // Assert
                 Assert.Equal(expectedBool, actualBool);
             }
@@ -69,14 +69,14 @@ namespace TaskManagerAPITests
             if (expectedErrorMessage != null)
             {
                 // Act & Assert
-                var exception = Assert.Throws<ArgumentException>(() => taskManager.ValidateTask(task));
+                var exception = Assert.Throws<ArgumentException>(() => taskManager.TaskIsValid(task));
                 Assert.Equal(expectedErrorMessage, exception.Message);
             }
             else
             {
                 // Act
                 var expectedBool = true;
-                var actualBool = taskManager.ValidateTask(task);
+                var actualBool = taskManager.TaskIsValid(task);
                 // Assert
                 Assert.Equal(expectedBool, actualBool);
             }
@@ -100,14 +100,14 @@ namespace TaskManagerAPITests
             if (expectedErrorMessage != null)
             {
                 // Act & Assert
-                var exception = Assert.Throws<ArgumentException>(() => taskManager.ValidateTask(task));
+                var exception = Assert.Throws<ArgumentException>(() => taskManager.TaskIsValid(task));
                 Assert.Equal(expectedErrorMessage, exception.Message);
             }
             else
             {
                 // Act
                 var expectedBool = true;
-                var actualBool = taskManager.ValidateTask(task);
+                var actualBool = taskManager.TaskIsValid(task);
                 // Assert
                 Assert.Equal(expectedBool, actualBool);
             }

@@ -108,8 +108,8 @@ namespace TaskManagerAPITests
             var getResult2 = controller.GetTask("IntegrationTestTask2");
 
             // Assert: Opgaverne skal ikke længere kunne findes
-            Assert.IsType<NotFoundResult>(getResult1.Result);
-            Assert.IsType<NotFoundResult>(getResult2.Result);
+            Assert.IsType<NotFoundObjectResult>(getResult1.Result);
+            Assert.IsType<NotFoundObjectResult>(getResult2.Result);
         }
 
     }

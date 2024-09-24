@@ -89,33 +89,8 @@ namespace TaskManagerAPI
 
         }
 
-        public bool TaskIsValid(TaskClass task)
-        {
-            bool isResultGood = true;
-
-            if (task.Deadline <= DateTime.Now)
-            {
-                isResultGood = false;
-            }
-            if (string.IsNullOrEmpty(task.Category))
-            {
-                isResultGood = false;
-            }
-            if (task.TaskName.Length > 20)
-            {
-                isResultGood = false;
-            }
-            if (task.TaskValue.Length > 20)
-            {
-                isResultGood = false;
-            }
-
-            return isResultGood;
-
-        }
-
         // The business rules for task creation are: Task name not empty, should be unique, min 1 chars, max 20. Task value min 10 chars, max 100. Date must be a later date.
-        public bool ValidateTask(TaskClass task)
+        public bool TaskIsValid(TaskClass task)
         {
             if (string.IsNullOrEmpty(task.TaskName))
             {

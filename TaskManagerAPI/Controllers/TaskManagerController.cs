@@ -89,8 +89,6 @@ namespace TaskManagerAPI.Controllers
             {
                 return NotFound(ex.Message);
             }
-            //_taskManager.DeleteTask(name);
-            //return NoContent();
         }
     }
 }
