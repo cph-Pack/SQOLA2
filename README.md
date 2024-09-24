@@ -55,6 +55,9 @@ Although our style of commenting doesn't necessarily adhere to Microsoft's codin
 
 
 ## Reflection on Testing and Code Quality
+- The importance of mocking in unit testing for isolating external dependencies.
+
+By mocking, we can created controlled simulated versions of the code to test the behaviour of the code and not nescessarily the dependencies within the system. We also don't have to rely on other dependencies running, as we can run the tests in an instant, which eliminates a delay that could occur with e.g. a database. By using mock data, we ensure that our tests are isoslated, fast and reliable while also testing the behaviour of the code, not the functionality of its dependencies
 
 -   The value of performing both code reviews and software reviews in ensuring quality.
 
