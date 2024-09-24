@@ -3,7 +3,7 @@ using System.Xml.Linq;
 
 namespace TaskManagerAPI
 {
-    [ExcludeFromCodeCoverage]
+    //[ExcludeFromCodeCoverage]
     public class TaskManager
     {
         private DBManager _dbManager;
