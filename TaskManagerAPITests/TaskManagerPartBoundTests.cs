@@ -20,7 +20,7 @@ namespace TaskManagerAPITests
         [InlineData("TaskName", null)] // 8 chars (valid)
         [InlineData("12345678901234567890", null)] // 20 chars (valid)
         [InlineData("123456789012345678901", "Task name must not exceed 20 characters.")] // 21 characters (invalid)
-        public void ValidateTask_ShouldValidateTaskNameLengthAndErrorMessage(string taskName, string expectedErrorMessage)
+        public void IsValidTask_ShouldValidateTaskNameLengthAndErrorMessage(string taskName, string expectedErrorMessage)
         {
             // Arrange
             var task = new TaskClass
@@ -34,14 +34,14 @@ namespace TaskManagerAPITests
             if (expectedErrorMessage != null)
             {
                 // Act & Assert
-                var exception = Assert.Throws<ArgumentException>(() => taskManager.TaskIsValid(task));
+                var exception = Assert.Throws<ArgumentException>(() => taskManager.IsValidTask(task));
                 Assert.Equal(expectedErrorMessage, exception.Message);
             }
             else
             {
                 // Act
                 var expectedBool = true;
-                var actualBool = taskManager.TaskIsValid(task);
+                var actualBool = taskManager.IsValidTask(task);
                 // Assert
                 Assert.Equal(expectedBool, actualBool);
             }
@@ -55,7 +55,7 @@ namespace TaskManagerAPITests
         [InlineData("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula.", null)] // 80 characters (valid)
         [InlineData("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean m", null)] // 100 characters (valid)
         [InlineData("Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean ma", "Task value must not exceed 100 characters.")] // 101 chars (invalid)
-        public void CreateTask_ShouldValidateTaskValueLengthAndErrorMessage(string taskValue, string expectedErrorMessage)
+        public void IsValidTask_ShouldValidateTaskValueLengthAndErrorMessage(string taskValue, string expectedErrorMessage)
         {
             // Arrange
             var task = new TaskClass
@@ -69,14 +69,14 @@ namespace TaskManagerAPITests
             if (expectedErrorMessage != null)
             {
                 // Act & Assert
-                var exception = Assert.Throws<ArgumentException>(() => taskManager.TaskIsValid(task));
+                var exception = Assert.Throws<ArgumentException>(() => taskManager.IsValidTask(task));
                 Assert.Equal(expectedErrorMessage, exception.Message);
             }
             else
             {
                 // Act
                 var expectedBool = true;
-                var actualBool = taskManager.TaskIsValid(task);
+                var actualBool = taskManager.IsValidTask(task);
                 // Assert
                 Assert.Equal(expectedBool, actualBool);
             }
@@ -86,7 +86,7 @@ namespace TaskManagerAPITests
         [InlineData(-1, "Task date must be a future date.")] // Yesterday (invalid)
         [InlineData(0, "Task date must be a future date.")] // Today (invalid)
         [InlineData(1, null)] // Tomorrow (valid)
-        public void CreateTask_ShouldValidateDeadlineAndErrorMessage(int daysFromToday, string expectedErrorMessage)
+        public void IsValidTask_ShouldValidateDeadlineAndErrorMessage(int daysFromToday, string expectedErrorMessage)
         {
             // Arrange
             var task = new TaskClass
@@ -100,14 +100,14 @@ namespace TaskManagerAPITests
             if (expectedErrorMessage != null)
             {
                 // Act & Assert
-                var exception = Assert.Throws<ArgumentException>(() => taskManager.TaskIsValid(task));
+                var exception = Assert.Throws<ArgumentException>(() => taskManager.IsValidTask(task));
                 Assert.Equal(expectedErrorMessage, exception.Message);
             }
             else
             {
                 // Act
                 var expectedBool = true;
-                var actualBool = taskManager.TaskIsValid(task);
+                var actualBool = taskManager.IsValidTask(task);
                 // Assert
                 Assert.Equal(expectedBool, actualBool);
             }
